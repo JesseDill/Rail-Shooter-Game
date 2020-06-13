@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MusicPlayer : MonoBehaviour
+public class ScreenLoader : MonoBehaviour
 {
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -20,10 +15,11 @@ public class MusicPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     void LoadScene()
     {
         SceneManager.LoadScene(1);
     }
+
 }

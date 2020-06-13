@@ -4,22 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-
+    [Header("Movement Speed & Range")]
     [Tooltip("In m/s^1")][SerializeField] float xSpeed = 4f;
     [Tooltip("In m/s^1")] [SerializeField] float ySpeed = 4f;
 
     [SerializeField] float xMovRange = 3.2f;
     [SerializeField] float yMovRange = 3.2f;
 
+    [Header("Rotation Calculations and Effects")]
     [SerializeField] float pitchFactor = 6f;
     [SerializeField] float yawFactor = 6f;
 
     [SerializeField] float pitchNudge= 6f;
     [SerializeField] float rollNudge = 6f;
 
+    [SerializeField] GameObject[] guns;
+
     float xThrow, yThrow;
+    bool isControlEnabled = true;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +34,47 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ProcessTranslation();
-        ProcessRotation();
+        if (isControlEnabled)
+        {
+            ProcessTranslation();
+            ProcessRotation();
+            ProcessFiring();
+        }
+    }
+
+    void ProcessFiring()
+    {
+        if (CrossPlatformInputManager.GetButton("Fire"))
+        {
+            ActivateGuns();
+        }
+
+        else
+        {
+            DeactivateGuns();
+        }
+    }
+
+    private void ActivateGuns()
+    {
+        foreach (GameObject gun in guns)
+        {
+            gun.SetActive(true);
+        }
+    }
+
+    private void DeactivateGuns()
+    {
+        foreach (GameObject gun in guns)
+        {
+            gun.SetActive(false);
+        }
+    }
+
+
+    void OnPlayerDeath()//called by string reference
+    {
+        isControlEnabled = false;
     }
 
     private void ProcessRotation()
